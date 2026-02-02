@@ -6,6 +6,10 @@
   font-family: "Inter", sans-serif;
 }
 
+body{
+  background-color: rgb(4, 11, 4);
+}
+
 ::-webkit-scrollbar{
   display: none;
 }
