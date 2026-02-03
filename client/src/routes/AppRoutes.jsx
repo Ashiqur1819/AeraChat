@@ -1,7 +1,7 @@
-import {Route, Routes} from "react-router-dom"
-import HomePage from "../pages/HomePage"
-import LoginPage from "../pages/LoginPage"
-import ProfilePage from "../pages/ProfilePage"
+import { Route, Routes } from "react-router-dom";
+import HomePage from "../pages/HomePage";
+import LoginPage from "../pages/LoginPage";
+import ProfilePage from "../pages/ProfilePage";
 
 function AppRoutes() {
   return (
@@ -12,7 +12,7 @@ function AppRoutes() {
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default AppRoutes
+export default AppRoutes;
