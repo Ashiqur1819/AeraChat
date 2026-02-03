@@ -17,7 +17,7 @@ function Sidebar({ selectedUser, setSelectedUser }) {
               alt="Menu"
               className="max-h-5 cursor-pointer"
             />
-            <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md  bg-[#282142] border border-gray-600 text-gray-100 hidden group-hover:block">
+            <div className="absolute top-full right-0 z-20 w-32 p-5 rounded-md  bg-blue-900 border border-gray-600 text-gray-100 hidden group-hover:block">
               <p
                 onClick={() => navigate("/profile")}
                 className="cursor-pointer text-sm"
@@ -30,7 +30,7 @@ function Sidebar({ selectedUser, setSelectedUser }) {
           </div>
         </div>
 
-        <div className="bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5">
+        <div className="bg-blue-900/33 rounded-full flex items-center gap-2 py-3 px-4 mt-5">
           <img src={assets.search_icon} alt="Search" className="w-3" />
           <input
             type="text"
@@ -46,7 +46,7 @@ function Sidebar({ selectedUser, setSelectedUser }) {
             onClick={() => {
               setSelectedUser(user);
             }}
-            className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && "bg-[#282142]/50"}`}
+            className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && "bg-blue-900/33"}`}
             key={index}
           >
             <img
@@ -63,7 +63,7 @@ function Sidebar({ selectedUser, setSelectedUser }) {
               )}
             </div>
             {index > 2 && (
-              <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500/50">
+              <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-blue-500">
                 {index}
               </p>
             )}

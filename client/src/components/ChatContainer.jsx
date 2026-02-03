@@ -12,7 +12,7 @@ function ChatContainer({ selectedUser, setSelectedUser }) {
   }, []);
 
   return selectedUser ? (
-    <div className="h-full overflow-scroll relative backdrop-blur-lg">
+    <div className="h-full overflow-scroll relative backdrop-blur-md bg-black/33">
       {/* Header area */}
       <div className="flex items-center gap-3 py-3 mx-4 border-b border-stone-500">
         <img src={assets.profile_martin} alt="" className="w-8 rounded-full" />
@@ -44,7 +44,7 @@ function ChatContainer({ selectedUser, setSelectedUser }) {
               />
             ) : (
               <p
-                className={`p-2 max-w-50 md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${
+                className={`p-2 max-w-50 md:text-sm font-light rounded-lg mb-8 break-all bg-blue-900/75 text-white ${
                   msg.senderId === "680f50e4f10f3cd28382ecf9"
                     ? "rounded-br-none"
                     : "rounded-bl-none"
@@ -74,7 +74,7 @@ function ChatContainer({ selectedUser, setSelectedUser }) {
 
         {/* Bottom area */}
         <div className="absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3">
-          <div className="flex-1 flex items-center bg-gray-100/12 px-3 rounded-full">
+          <div className="flex-1 flex items-center bg-blue-900/33 px-3 rounded-full">
             <input
               type="text"
               placeholder="Send a message"
@@ -99,9 +99,9 @@ function ChatContainer({ selectedUser, setSelectedUser }) {
       </div>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center gap-2 text-gray-500 bg-white/10 max-md:hidden">
-      <img src={assets.logo_icon} className="max-w-16" alt="" />
-      <p className="text-lg font-medium text-white">Chat anytime, anywhere</p>
+    <div className="flex flex-col items-center justify-center gap-3 text-gray-500 bg-black/10 max-md:hidden">
+      <img src={assets.logo_icon} className="max-w-32" alt="" />
+      <p className="text-2xl font-medium text-white">Chat Anytime, Anywhere</p>
     </div>
   );
 }
