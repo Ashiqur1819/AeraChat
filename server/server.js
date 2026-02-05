@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from "express" 
 import http from "http"
 import cors from "cors"
-import { connectDB } from './lib/db.js'
+import { connectDB } from './config/db.js'
 
 const PORT = process.env.PORT || 3000
 
@@ -19,6 +19,8 @@ app.use("/api/status", (req, res) => {
 // Connect to MongoDB
 await connectDB()
 
+
+// Listening the server
 server.listen(PORT, () => {
     console.log("Server is running successfully on port: ", PORT)
 })
