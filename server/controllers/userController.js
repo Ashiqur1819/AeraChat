@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import User from "../models/user-model";
-import { generateToken } from "../utils/generateToken";
+import User from "../models/user-model.js";
+import { generateToken } from "../utils/generateToken.js";
 
 //Controller To Sign Up User
 export const signupUser = async (req, res) => {
@@ -75,3 +75,9 @@ export const loginUser = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
+// Controller to authenticated user
+export const checkAuth = (req, res) => {
+  res.json({success: true, user: req.user})
+}
