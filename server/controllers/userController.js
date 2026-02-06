@@ -2,8 +2,8 @@ import bcrypt from "bcryptjs";
 import User from "../models/user-model";
 import { generateToken } from "../utils/generateToken";
 
-// Sign Up User
-export const signUpUser = async (req, res) => {
+//Controller To Sign Up User
+export const signupUser = async (req, res) => {
   const { fullName, email, password, bio } = req.body;
 
   try {
@@ -34,6 +34,41 @@ export const signUpUser = async (req, res) => {
       userData: newUser,
       token,
       message: "Account created successfully.",
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+
+//Controller To Login User
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "You don't have an account. Please sign up.",
+      });
+    }
+
+    const isPasswordCorrect = bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return res.json({ success: false, message: "Invalid credentials" });
+    }
+
+    const token = generateToken(user._id);
+
+    res.json({
+      success: true,
+      user,
+      token,
+      message: "Login successfull.",
     });
   } catch (error) {
     console.log(error.message);
