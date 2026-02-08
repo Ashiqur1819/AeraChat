@@ -47,26 +47,26 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const userData = await User.findOne({ email });
 
-    if (!user) {
+    if (!userData) {
       return res.json({
         success: false,
         message: "You don't have an account. Please sign up.",
       });
     }
 
-    const isPasswordCorrect = bcrypt.compare(password, user.password);
+    const isPasswordCorrect = bcrypt.compare(password, userData.password);
 
     if (!isPasswordCorrect) {
       return res.json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(userData._id);
 
     res.json({
       success: true,
-      user,
+      userData,
       token,
       message: "Login successfull.",
     });
