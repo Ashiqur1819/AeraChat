@@ -4,17 +4,30 @@ import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import { createContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
-
-  const {authUser} = createContext(AuthContext)
+  const { authUser } = createContext(AuthContext);
 
   return (
     <div>
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile"
+          element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}
+        />
       </Routes>
     </div>
   );

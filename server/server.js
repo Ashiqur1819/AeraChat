@@ -14,43 +14,53 @@ const server = http.createServer(app);
 
 // Initialize socket.io server
 export const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: { origin: "*" }
 });
 
-// Store online users
-export const userSocketMap = {}; // {userId: socketId}
+// Store online users { userId: socketId }
+export const userSocketMap = {};
 
 // Socket.io connection handler
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
-  console.log("User connected", userId);
+  if (!userId) return;
 
-  if (userId) userSocketMap[userId] = socket.id;
+  console.log("User connected:", userId);
+
+  // Add user to online map
+  userSocketMap[userId] = socket.id;
 
   // Emit online users to all connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
+  // Handle disconnect
   socket.on("disconnect", () => {
-    console.log("User disconnected", userId);
-    delete userSocketMap(userId);
+    console.log("User disconnected:", userId);
+
+    if (userSocketMap[userId]) {
+      delete userSocketMap[userId];
+    }
+
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });
 
+/* ================= MIDDLEWARE ================= */
 app.use(express.json({ limit: "4mb" }));
 app.use(cors());
 
-// Routes setup
-app.use("/api/status", (req, res) => {
+/* ================= ROUTES ================= */
+app.get("/api/status", (req, res) => {
   res.send("Server is running!");
 });
+
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter);
 
-// Connect to MongoDB
+/* ================= DATABASE ================= */
 await connectDB();
 
-// Listening the server
+/* ================= SERVER LISTEN ================= */
 server.listen(PORT, () => {
-  console.log("Server is running successfully on port: ", PORT);
+  console.log(`Server is running successfully on port: ${PORT}`);
 });
