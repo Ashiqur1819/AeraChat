@@ -82,7 +82,7 @@ export const checkAuth = (req, res) => {
 };
 
 // Controller to update user profile details
-export const updateProfile = async () => {
+export const updateProfile = async (req, res) => {
   const { profilePic, fullName, bio } = req.body;
 
   try {
