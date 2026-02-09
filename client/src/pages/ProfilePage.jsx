@@ -4,8 +4,7 @@ import assets from "../assets/assets";
 import { AuthContext } from "../../context/authContext";
 
 function ProfilePage() {
-
-  const {authUser, updateProfile} = useContext(AuthContext)
+  const { authUser, updateProfile } = useContext(AuthContext);
 
   const [selectedImg, setSelectedImg] = useState(null);
   const [name, setName] = useState(authUser.fullName);
@@ -14,19 +13,19 @@ function ProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!selectedImg){
-      await updateProfile({fullName: name, bio})
+    if (!selectedImg) {
+      await updateProfile({ fullName: name, bio });
       navigate("/");
-      return
+      return;
     }
 
-    const reader = new FileReader()
-    reader.readAsDataURL(selectedImg)
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImg);
     reader.onload = async () => {
-      const base64Image = reader.result
-      await updateProfile({profilePic: base64Image, fullName: name, bio})
-      navigate("/")
-    }
+      const base64Image = reader.result;
+      await updateProfile({ profilePic: base64Image, fullName: name, bio });
+      navigate("/");
+    };
   };
 
   return (
