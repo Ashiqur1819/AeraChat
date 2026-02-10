@@ -26,7 +26,11 @@ function AppRoutes() {
         />
         <Route
           path="/profile"
-          element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </div>
