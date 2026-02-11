@@ -26,6 +26,18 @@ export const ChatProvider = ({children}) => {
        }
     }
 
+    // Get messages for selected users
+    const getMessages = async (userId) => {
+       try {
+        const {data} = await axios.get(`/api/messages/${userId}`)
+       if(data.success){
+        setMessages(data.messages)
+       }
+       } catch (error) {
+                toast.error(error.message)
+       }
+    }
+
     const value = {
 
     }
