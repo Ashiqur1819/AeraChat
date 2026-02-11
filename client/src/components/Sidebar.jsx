@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import assets, { userDummyData } from "../assets/assets";
 import { useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 
 function Sidebar({ selectedUser, setSelectedUser }) {
 
