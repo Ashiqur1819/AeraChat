@@ -2,49 +2,59 @@ import { createContext, useContext, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
 
-export const ChatContext = createContext()
+export const ChatContext = createContext();
 
-export const ChatProvider = ({children}) => {
+export const ChatProvider = ({ children }) => {
+  const { messages, setMessages } = useState([]);
+  const { users, setUsers } = useState([]);
+  const { selectedUser, setSelectedUser } = useState(null);
+  const { unseenMessages, setUnseenMessages } = useState({});
 
-    const {messages, setMessages} = useState([])
-    const {users, setUsers} = useState([])
-    const {selectedUsers, setSelectedUsers} = useState(null)
-    const {unseenMessages, setUnseenMessages} = useState({})
+  const { socket, axios } = useContext(AuthContext);
 
-    const {socket, axios} = useContext(AuthContext)
-
-    // Get all users for sidebar
-    const getUsers = async () => {
-       try {
-        const {data} = await axios.get("/api/messages/users")
-       if(data.success){
-        setUsers(data.users)
-        setUnseenMessages(data.unseenMessages)
-       }
-       } catch (error) {
-        toast.error(error.message)
-       }
+  // Get all users for sidebar
+  const getUsers = async () => {
+    try {
+      const { data } = await axios.get("/api/messages/users");
+      if (data.success) {
+        setUsers(data.users);
+        setUnseenMessages(data.unseenMessages);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
+  };
 
-    // Get messages for selected users
-    const getMessages = async (userId) => {
-       try {
-        const {data} = await axios.get(`/api/messages/${userId}`)
-       if(data.success){
-        setMessages(data.messages)
-       }
-       } catch (error) {
-                toast.error(error.message)
-       }
+  // Get messages for selected users
+  const getMessages = async (userId) => {
+    try {
+      const { data } = await axios.get(`/api/messages/${userId}`);
+      if (data.success) {
+        setMessages(data.messages);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
+  };
 
-    const value = {
-
+  // Send message to selected users
+  const sendMessage = async (messageData) => {
+    try {
+      const { data } = await axios.post(
+        `/api/messages/send/:${selectedUser._id}`,
+        messageData,
+      );
+      if (data.success) {
+        setMessages((prevMessages) => [...prevMessages, data.newMessage]);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
+  };
 
-    return (
-        <ChatContext.Provider value={value}>
-            {children}
-        </ChatContext.Provider>
-    )
-}
+  const value = {};
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+};
