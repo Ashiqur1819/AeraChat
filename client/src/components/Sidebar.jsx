@@ -5,20 +5,30 @@ import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 
 function Sidebar() {
+  const {
+    getUsers,
+    users,
+    selectedUser,
+    setSelectedUser,
+    unseenMessages,
+    setUnseenMessages,
+  } = useContext(ChatContext);
 
-  const {getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages} = useContext(ChatContext)
+  const { logout, onlineUsers } = useContext(AuthContext);
 
-  const {logout, onlineUsers} = useContext(AuthContext)
-
-  const [input, setInput] = useState(false)
+  const [input, setInput] = useState(false);
 
   const navigate = useNavigate();
 
-  const filturedUsers = input ? users.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase())) : users
+  const filturedUsers = input
+    ? users.filter((user) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase()),
+      )
+    : users;
 
   useEffect(() => {
-    getUsers()
-  }, [onlineUsers])
+    getUsers();
+  }, [onlineUsers]);
 
   return (
     <div
@@ -41,7 +51,9 @@ function Sidebar() {
                 Edit Profile
               </p>
               <hr className="my-2 border-t border-gray-500" />
-              <p onClick={() => logout()} className="cursor-pointer text-sm">Logout</p>
+              <p onClick={() => logout()} className="cursor-pointer text-sm">
+                Logout
+              </p>
             </div>
           </div>
         </div>
@@ -62,6 +74,7 @@ function Sidebar() {
           <div
             onClick={() => {
               setSelectedUser(user);
+              setUnseenMessages((prev) => ({ ...prev, [user._id]: 0 }));
             }}
             className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${selectedUser?._id === user._id && "bg-blue-900/33"}`}
             key={index}
@@ -79,9 +92,9 @@ function Sidebar() {
                 <span className="text-neutral-400 text-xs">Offline</span>
               )}
             </div>
-            {unseenMessages[user._id] > 0 && (
-              <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-blue-500">
-                {unseenMessages[user._id]}
+            {unseenMessages[user?._id] > 0 && (
+              <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-blue-500 text-white">
+                {unseenMessages[user?._id]}
               </p>
             )}
           </div>

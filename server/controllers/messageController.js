@@ -3,33 +3,43 @@ import Message from "../models/message-model.js";
 import User from "../models/user-model.js";
 import { io, userSocketMap } from "../server.js";
 
-// Get all user except logged in user
+
+// Get all users for sidebar
 export const getUsersForSidebar = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const filteredUsers = await User.find({ _id: { $ne: userId } }).select(
-      "-password",
-    );
+    const loggedInUserId = req.user._id;
 
-    // Count number of messages not seen
-    const unseenMessages = {};
-    const promises = filteredUsers.map(async (user) => {
-      const messages = await Message.find({
-        senderId: user._id,
-        receiverId: userId,
-        seen: false,
-      });
+    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
 
-      if (messages.length > 0) {
-        unseenMessages[user._id] = messages.length;
+    const unseenCounts = await Message.aggregate([
+      {
+        $match: {
+          receiverId: loggedInUserId,
+          seen: false
+        }
+      },
+      {
+        $group: {
+          _id: "$senderId",
+          count: { $sum: 1 }
+        }
       }
+    ]);
+
+    const unseenMessages = {};
+    unseenCounts.forEach(item => {
+      unseenMessages[item._id.toString()] = item.count;
     });
 
-    await Promise.all(promises);
-    res.json({ success: true, users: filteredUsers, unseenMessages });
+    res.json({ 
+      success: true, 
+      users: filteredUsers, 
+      unseenMessages 
+    });
+
   } catch (error) {
-    console.log(error.messages);
-    res.json({ success: false, message: error.messages });
+    console.error("Error in getUsersForSidebar: ", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -74,14 +84,13 @@ export const markMessageAsSeen = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
-    const senderId = req.params.id;
-    const receiverId = req.user._id;
+    const receiverId = req.params.id;
+    const senderId = req.user._id;
 
     let imageURL;
-
     if (image) {
-      const uploadResponse = cloudinary.uploader.upload(image);
-      imageURL = (await uploadResponse).secure_url;
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      imageURL = uploadResponse.secure_url;
     }
 
     const newMessage = await Message.create({
@@ -91,16 +100,14 @@ export const sendMessage = async (req, res) => {
       image: imageURL,
     });
 
-    // Emit the new message to the receiver's socket
     const receiverSocketId = userSocketMap[receiverId];
-
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
     res.json({ success: true, newMessage });
   } catch (error) {
-    console.log(error.messages);
-    res.json({ success: false, message: error.messages });
+    console.log("Error in sendMessage controller:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
