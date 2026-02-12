@@ -58,7 +58,7 @@ function Sidebar() {
       </div>
 
       <div className="flex flex-col">
-        {filturedUsers.map((user, index) => (
+        {filturedUsers?.map((user, index) => (
           <div
             onClick={() => {
               setSelectedUser(user);
@@ -79,9 +79,9 @@ function Sidebar() {
                 <span className="text-neutral-400 text-xs">Offline</span>
               )}
             </div>
-            {index > 2 && (
+            {unseenMessages[user._id] > 0 && (
               <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-blue-500">
-                {index}
+                {unseenMessages[user._id]}
               </p>
             )}
           </div>

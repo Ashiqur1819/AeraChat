@@ -5,11 +5,10 @@ import toast from "react-hot-toast";
 export const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-  const { messages, setMessages } = useState([]);
-  const { users, setUsers } = useState([]);
-  const { selectedUser, setSelectedUser } = useState(null);
-  const { unseenMessages, setUnseenMessages } = useState({});
-
+  const [ messages, setMessages ] = useState([]);
+  const [ users, setUsers ] = useState([]);
+  const [ selectedUser, setSelectedUser ] = useState(null);
+  const [ unseenMessages, setUnseenMessages ] = useState({});
   const { socket, axios } = useContext(AuthContext);
 
   // Get all users for sidebar
@@ -22,6 +21,7 @@ export const ChatProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.message);
+      console.log(error)
     }
   };
 
