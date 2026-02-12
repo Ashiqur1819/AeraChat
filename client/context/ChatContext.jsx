@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
 
@@ -72,7 +72,31 @@ export const ChatProvider = ({ children }) => {
     })
   }
 
-  const value = {};
+  // Unsubscribe from messages
+  const unsubscribeFromMessages = () => {
+    if(socket){
+      socket.off("newMessage")
+    }
+  }
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+  useEffect(() => {
+    subscribeToMessages()
+    return () => unsubscribeFromMessages()
+  }, [socket, selectedUser])
+
+  const value = {
+    messages,
+    setMessages,
+    users,
+    selectedUser,
+    setSelectedUser,
+    getUsers,
+    sendMessage,
+    unseenMessages,
+    setUnseenMessages
+  };
+
+  return <ChatContext.Provider value={value}>
+    {children}
+    </ChatContext.Provider>;
 };
