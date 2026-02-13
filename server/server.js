@@ -7,7 +7,6 @@ import userRouter from "./routes/userRoutes.js";
 import messageRouter from "./routes/messageRouter.js";
 import { Server } from "socket.io";
 
-const PORT = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 
@@ -55,16 +54,14 @@ app.get("/api/status", (req, res) => {
 });
 
 // Server starts
-const startServer = async () => {
-  try {
-    await connectDB();
-    server.listen(PORT, () => {
-      console.log(`Server is running successfully on port: ${PORT}`);
-    });
-  } catch (error) {
-    console.error("Database connection failed:", error);
-    process.exit(1);
-  }
-};
+await connectDB();
 
-startServer();
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3000;
+  server.listen(PORT, () => {
+    console.log(`Server is running successfully on port: ${PORT}`);
+  });
+}
+
+// Export server for vercel
+export default server;

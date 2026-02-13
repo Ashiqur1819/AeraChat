@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div className="bg-[url('./src/assets/bg-1.png')] bg-no-repeat bg-cover">
+    <div className="bg-[url('/bg-1.png')] bg-no-repeat bg-cover">
       <Toaster />
       <AppRoutes />
     </div>
