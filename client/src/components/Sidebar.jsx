@@ -14,7 +14,7 @@ function Sidebar() {
     setUnseenMessages,
   } = useContext(ChatContext);
 
-  console.log(selectedUser)
+  console.log(selectedUser);
 
   const { logout, onlineUsers } = useContext(AuthContext);
 
@@ -28,7 +28,7 @@ function Sidebar() {
       )
     : users;
 
-    console.log(filturedUsers)
+  console.log(filturedUsers);
 
   useEffect(() => {
     getUsers();

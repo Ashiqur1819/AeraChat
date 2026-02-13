@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import Loading from "../src/components/Loading";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  /* ================= CHECK AUTH ================= */
+  // Check auth
   const checkAuth = async () => {
     try {
       const { data } = await axios.get("/api/auth/check");
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  /* ================= LOGIN ================= */
+  // Login
   const login = async (state, credentials) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, credentials);
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  /* ================= LOGOUT ================= */
+  // Logout
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
-  /* ================= UPDATE PROFILE ================= */
+  // Update profile
   const updateProfile = async (body) => {
     try {
       const { data } = await axios.put("/api/auth/update-profile", body);
@@ -90,7 +91,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  /* ================= SOCKET ================= */
+  // Socket
   const connectSocket = (userData) => {
     if (!userData || socket?.connected) return;
 
@@ -107,7 +108,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  /* ================= INITIAL LOAD ================= */
+  // Initial load
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["token"] = token;
@@ -117,9 +118,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  /* ================= LOADING GUARD ================= */
+  // Loading
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

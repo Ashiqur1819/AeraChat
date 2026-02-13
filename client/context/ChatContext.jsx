@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
 
@@ -11,6 +17,7 @@ export const ChatProvider = ({ children }) => {
   const [unseenMessages, setUnseenMessages] = useState({});
   const { socket, axios, authUser } = useContext(AuthContext);
 
+  // Get all users
   const getUsers = async () => {
     try {
       const { data } = await axios.get("/api/messages/users");
@@ -23,6 +30,7 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  // Get all messages
   const getMessages = async (userId) => {
     try {
       const { data } = await axios.get(`/api/messages/${userId}`);
@@ -34,9 +42,13 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  // Send message
   const sendMessage = async (messageData) => {
     try {
-      const { data } = await axios.post(`/api/messages/send/${selectedUser._id}`, messageData);
+      const { data } = await axios.post(
+        `/api/messages/send/${selectedUser._id}`,
+        messageData,
+      );
       if (data.success) {
         setMessages((prev) => [...prev, data.newMessage]);
       }
@@ -45,6 +57,7 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  // Subscribe message
   const subscribeToMessages = useCallback(() => {
     if (!socket) return;
 
@@ -63,10 +76,10 @@ export const ChatProvider = ({ children }) => {
       } else {
         setUnseenMessages((prev) => {
           const sId = senderId;
-          const currentCount = (prev && prev[sId]) ? Number(prev[sId]) : 0;
+          const currentCount = prev && prev[sId] ? Number(prev[sId]) : 0;
           return {
             ...prev,
-            [sId]: currentCount + 1
+            [sId]: currentCount + 1,
           };
         });
       }
@@ -82,14 +95,22 @@ export const ChatProvider = ({ children }) => {
     if (selectedUser) {
       setUnseenMessages((prev) => ({
         ...prev,
-        [selectedUser._id]: 0
+        [selectedUser._id]: 0,
       }));
     }
   }, [selectedUser]);
 
   const value = {
-    messages, setMessages, users, selectedUser, setSelectedUser,
-    getUsers, sendMessage, getMessages, unseenMessages, setUnseenMessages
+    messages,
+    setMessages,
+    users,
+    selectedUser,
+    setSelectedUser,
+    getUsers,
+    sendMessage,
+    getMessages,
+    unseenMessages,
+    setUnseenMessages,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;

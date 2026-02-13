@@ -5,17 +5,18 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 function RightSidebar() {
+  const { selectedUser, messages } = useContext(ChatContext);
+  const { logout, onlineUsers } = useContext(AuthContext);
+  const [messageImages, setMessageImages] = useState([]);
 
-  const {selectedUser, messages} = useContext(ChatContext)
-  const {logout, onlineUsers} = useContext(AuthContext)
-  const [messageImages, setMessageImages] = useState([])
-
-  console.log(messageImages)
+  console.log(messageImages);
 
   // Get all images from the messages
   useEffect(() => {
-    setMessageImages(messages.filter(msg => msg.image))?.map(msg => msg.image)
-  }, [messages])
+    setMessageImages(messages.filter((msg) => msg.image))?.map(
+      (msg) => msg.image,
+    );
+  }, [messages]);
 
   return (
     selectedUser && (
@@ -31,7 +32,9 @@ function RightSidebar() {
             className="w-20 aspect-square rounded-full"
           />
           <h1 className="px-10 text-xl font-medium mx-auto flex items-center gap-2">
-            {onlineUsers.includes(selectedUser._id) && <p className="w-2 h-2 rounded-full bg-green-500"></p>}
+            {onlineUsers.includes(selectedUser._id) && (
+              <p className="w-2 h-2 rounded-full bg-green-500"></p>
+            )}
             {selectedUser.fullName}
           </h1>
           <p className="px-10 mx-auto">{selectedUser.bio}</p>
@@ -53,7 +56,10 @@ function RightSidebar() {
             ))}
           </div>
 
-          <button onClick={() => logout()} className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-linear-to-r from-blue-500 to-blue-900 text-white border-none text-sm font-medium py-2 px-20 rounded-full cursor-pointer">
+          <button
+            onClick={() => logout()}
+            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-linear-to-r from-blue-500 to-blue-900 text-white border-none text-sm font-medium py-2 px-20 rounded-full cursor-pointer"
+          >
             Logout
           </button>
         </div>
