@@ -1,6 +1,7 @@
 # AeraChat
 
 ###
+
 <img src="https://i.ibb.co.com/mV0zqk46/Aera-Chat.png"  />
 
 ###
@@ -18,12 +19,12 @@ The application focuses on real-time messaging, authentication, and seamless use
 
 ## Website Details
 
-* User Authentication System
-* Real-Time Messaging with Socket.io
-* Online/Offline Status Indicator
-* User Search Functionality
-* Fully Responsive UI
-* Modern Dark-Themed Interface
+- User Authentication System
+- Real-Time Messaging with Socket.io
+- Online/Offline Status Indicator
+- User Search Functionality
+- Fully Responsive UI
+- Modern Dark-Themed Interface
 
 The application is designed to provide a fast and interactive chatting experience with clean UI and scalable backend architecture.
 
@@ -31,13 +32,13 @@ The application is designed to provide a fast and interactive chatting experienc
 
 ## Key Features
 
-* ✅ Secure User Registration & Login (JWT Authentication)
-* ✅ Real-time messaging using WebSockets
-* ✅ Online/Offline presence detection
-* ✅ Persistent chat history (MongoDB)
-* ✅ Private one-to-one conversations
-* ✅ Responsive and modern UI design
-* ✅ Scalable backend structure
+- ✅ Secure User Registration & Login (JWT Authentication)
+- ✅ Real-time messaging using WebSockets
+- ✅ Online/Offline presence detection
+- ✅ Persistent chat history (MongoDB)
+- ✅ Private one-to-one conversations
+- ✅ Responsive and modern UI design
+- ✅ Scalable backend structure
 
 ---
 
@@ -45,20 +46,20 @@ The application is designed to provide a fast and interactive chatting experienc
 
 ### Frontend
 
-* React.js
-* Axios
-* Tailwind CSS
-* React Router
-* Socket.io
+- React.js
+- Axios
+- Tailwind CSS
+- React Router
+- Socket.io
 
 ### Backend
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* Socket.io
-* JWT Authentication
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Socket.io
+- JWT Authentication
 
 ---
 
@@ -117,4 +118,3 @@ http://localhost:5173
 ```
 
 ---
-
