@@ -3,40 +3,40 @@ import Message from "../models/message-model.js";
 import User from "../models/user-model.js";
 import { io, userSocketMap } from "../server.js";
 
+
 // Get all users for sidebar
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
 
-    const filteredUsers = await User.find({
-      _id: { $ne: loggedInUserId },
-    }).select("-password");
+    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
 
     const unseenCounts = await Message.aggregate([
       {
         $match: {
           receiverId: loggedInUserId,
-          seen: false,
-        },
+          seen: false
+        }
       },
       {
         $group: {
           _id: "$senderId",
-          count: { $sum: 1 },
-        },
-      },
+          count: { $sum: 1 }
+        }
+      }
     ]);
 
     const unseenMessages = {};
-    unseenCounts.forEach((item) => {
+    unseenCounts.forEach(item => {
       unseenMessages[item._id.toString()] = item.count;
     });
 
-    res.json({
-      success: true,
-      users: filteredUsers,
-      unseenMessages,
+    res.json({ 
+      success: true, 
+      users: filteredUsers, 
+      unseenMessages 
     });
+
   } catch (error) {
     console.error("Error in getUsersForSidebar: ", error.message);
     res.status(500).json({ success: false, message: "Internal server error" });
